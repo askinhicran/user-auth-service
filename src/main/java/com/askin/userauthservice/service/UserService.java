@@ -114,7 +114,7 @@ public class UserService implements UserDetailsService {
             }
 
             if (hasLetter && hasDigit) {
-                return; // Password meets the complexity requirements
+                return;
             }
         }
 

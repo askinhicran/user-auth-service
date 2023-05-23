@@ -1,5 +1,6 @@
 package com.askin.userauthservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,13 @@ public class User {
     private Long id;
 
     @Column(unique = true)
+    @JsonProperty("username")
     private String username;
 
     @Column(unique = true)
+    @JsonProperty("email")
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }

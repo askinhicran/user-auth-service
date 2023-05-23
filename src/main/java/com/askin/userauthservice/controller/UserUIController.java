@@ -37,10 +37,9 @@ public class UserUIController {
             httpPost.setEntity(entity);
 
             httpPost.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
             httpClient.execute(httpPost);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred during request execution: " + e.getMessage());
         }
 
         return "redirect:/ui/login";
@@ -67,7 +66,7 @@ public class UserUIController {
 
             httpClient.execute(httpPost);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred during request execution: " + e.getMessage());
         }
 
         return "redirect:/dashboard";

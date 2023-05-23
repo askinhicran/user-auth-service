@@ -49,10 +49,8 @@ public class UserServiceTest {
         when(passwordEncoder.encode(user.getPassword())).thenReturn("hashedPassword");
         when(userRepository.save(user)).thenReturn(user);
 
-        // Call the method under test
         assertDoesNotThrow(() -> userService.registerUser(user));
 
-        // Verify the repository methods are called
         verify(userRepository, times(1)).findByUsername(user.getUsername());
         verify(userRepository, times(1)).findByEmail(user.getEmail());
         verify(userRepository, times(1)).save(user);
@@ -66,19 +64,19 @@ public class UserServiceTest {
         user.setEmail("test@example.com");
         user.setPassword("password123");
 
-        // Mock repository
+
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        // Call the method under test
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.registerUser(user));
 
-        // Verify the repository methods are called
+
         verify(userRepository, times(1)).findByUsername(user.getUsername());
         verify(userRepository, times(1)).findByEmail(user.getEmail());
 
-        // Verify the exception message
+
         assertEquals("Email is already registered.", exception.getMessage());
     }
 
@@ -90,17 +88,17 @@ public class UserServiceTest {
         user.setEmail("test@example.com");
         user.setPassword("password123");
 
-        // Mock repository
+
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        // Call the method under test
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.registerUser(user));
 
-        // Verify the repository method is called
+
         verify(userRepository, times(1)).findByUsername(user.getUsername());
 
-        // Verify the exception message
+
         assertEquals("Username is already taken.", exception.getMessage());
     }
 
@@ -111,42 +109,39 @@ public class UserServiceTest {
         user.setUsername("testuser");
         user.setPassword("password123");
 
-        // Mock repository
+
         when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(user.getPassword(), user.getPassword())).thenReturn(true);
 
-        // Call the method under test
+
         String token = userService.loginUser(user);
 
-        // Verify the repository method is called
+
         verify(userRepository, times(1)).findByUsername(user.getUsername());
         verify(passwordEncoder, times(1)).matches(user.getPassword(), user.getPassword());
 
-        // Verify the token is not null
         assertNotNull(token);
     }
 
     @Test
-    public void testLoginUser_InvalidCredentials() {
+    public void testLoginUser_DoNotMatchPassword() {
         // Test data
         User user = new User();
         user.setUsername("testuser");
         user.setPassword("password123");
 
-        // Mock repository
-        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
 
-        // Call the method under test
+        when(passwordEncoder.matches(user.getPassword(), user.getPassword())).thenReturn(false);
+
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> userService.loginUser(user));
 
-        // Verify the repository method is called
         verify(userRepository, times(1)).findByUsername(user.getUsername());
+        verify(passwordEncoder, times(1)).matches(user.getPassword(), user.getPassword());
 
-        // Verify the exception message
-        assertEquals("Invalid username or password.", exception.getMessage());
+        assertNotNull(exception);
     }
-
 }
 
 

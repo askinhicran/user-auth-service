@@ -24,14 +24,14 @@ public class UserController {
     }
 
     @Operation(summary = "Register a new user")
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         userService.registerUser(user);
         return ResponseEntity.ok("User registration is completed successfully.");
     }
 
     @Operation(summary = "Login user")
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login")
     public ResponseEntity<String> loginUser(@RequestBody User user) {
         String token = userService.loginUser(user);
         if (token != null) {

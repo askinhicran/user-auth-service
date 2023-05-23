@@ -34,18 +34,18 @@ public class UserControllerTest {
         user.setEmail("test@example.com");
         user.setPassword("password");
 
-        // Mock service
+
         doNothing().when(userService).registerUser(user);
 
-        // Call the method under test
+
         ResponseEntity<String> response = userController.registerUser(user);
 
-        // Verify the service method is called
+
         verify(userService, times(1)).registerUser(user);
 
-        // Verify the response status code is OK
+
         assert response.getStatusCode() == HttpStatus.OK;
-        // Verify the response message
+
         assert response.getBody().equals("User registration is completed successfully.");
     }
 
@@ -56,18 +56,18 @@ public class UserControllerTest {
         user.setUsername("testuser");
         user.setPassword("password");
 
-        // Mock service
+
         when(userService.loginUser(user)).thenReturn("token123");
 
-        // Call the method under test
+
         ResponseEntity<String> response = userController.loginUser(user);
 
-        // Verify the service method is called
+
         verify(userService, times(1)).loginUser(user);
 
-        // Verify the response status code is OK
+
         assert response.getStatusCode() == HttpStatus.OK;
-        // Verify the response body contains the token
+
         assert response.getBody().equals("token123");
     }
 
@@ -78,18 +78,18 @@ public class UserControllerTest {
         user.setUsername("testuser");
         user.setPassword("password");
 
-        // Mock service
+
         when(userService.loginUser(user)).thenReturn(null);
 
-        // Call the method under test
+
         ResponseEntity<String> response = userController.loginUser(user);
 
-        // Verify the service method is called
+
         verify(userService, times(1)).loginUser(user);
 
-        // Verify the response status code is UNAUTHORIZED
+
         assert response.getStatusCode() == HttpStatus.UNAUTHORIZED;
-        // Verify the response body contains the error message
+
         assert response.getBody().equals("Invalid username or password.");
     }
 
