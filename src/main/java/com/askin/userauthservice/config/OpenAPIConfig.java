@@ -8,10 +8,9 @@ import org.springframework.context.annotation.Configuration;
 public class OpenAPIConfig {
     @Bean
     public GroupedOpenApi publicApi() {
-        String[] paths = { "/api/users/**" }; // Specify the paths for your API endpoints
         return GroupedOpenApi.builder()
                 .group("public-api")
-                .pathsToMatch(paths)
+                .pathsToExclude("/login")
                 .build();
     }
 }
