@@ -69,6 +69,6 @@ public class UserUIController {
             System.out.println("An error occurred during request execution: " + e.getMessage());
         }
 
-        return "redirect:/dashboard";
+        return "welcome";
     }
 }

@@ -15,20 +15,27 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserService userService;
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/users/register").permitAll()
+                .antMatchers("/api/users/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .formLogin() // Form tabanlı kimlik doğrulama yapılandırması
+                .formLogin()
                 .and()
                 .csrf().disable();
+
+        http.headers().frameOptions().disable();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
 
